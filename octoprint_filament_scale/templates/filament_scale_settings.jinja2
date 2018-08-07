@@ -1,0 +1,72 @@
+
+<form class="form-horizontal">
+	<H4>Current Scale Reading</H4>
+	<div class="control-group">
+		<label class="control-label">{{ _('Current reading:') }}</label>
+		<div class="controls">
+			<div class="input-append">
+				<input type="text" class="input-mini" data-bind="value: settings.settings.plugins.filament_scale.lastknownweight" disabled>
+				<span class="add-on">g</span>
+			</div>
+		</div>
+	</div>
+	
+	<H4>Calibration</H4>
+	
+	
+	<p>
+		Before the scale will be accurate, it must be tared and calibrated. 
+	</p>
+	<p>
+		First, remove any objects from the scale and press tare:
+	</p>
+	<div class="control-group">
+		<div class="controls">
+			<button class="btn" type="button" data-bind="click: tare">Tare</button>
+		</div>
+	</div>
+	
+	<p>
+		Next, set an object of known weight on the scale, and press calibrate. 
+		<br>If you don't have a set of small weights, a 12oz can of soda is a good reference - it weighs about 395mg.
+	</p>	
+	
+	<div class="control-group">
+		<label class="control-label">{{ _('Known weight:') }}</label>
+		<div class="controls">
+			<div class="input-append">
+				
+				<input type="text" class="input-mini" id='settings-filament-scale-known-weight' data-bind="value: calibrate_known_weight">
+				<span class="add-on">g</span>
+				
+			</div>
+			
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<div class="input-append">
+				<button class="btn" type="button" data-bind="click: calibrate">Calibrate</button>
+			</div>
+		</div>
+	</div>
+	<p>
+		Finally, enter the weight of an empty spool. 
+		<br>This varies depending on brand; you can find a list of some filament brands <a href='https://www.reddit.com/r/3Dprinting/comments/4hlwse/empty_spool_weights_for_estimating_remaining/'>here.</a>
+	</p>	
+	<div class="control-group">
+		<label class="control-label">{{ _('Known weight:') }}</label>
+		<div class="controls">
+			<div class="input-append">
+				
+				<input type="text" class="input-mini" data-bind="value: settings.settings.plugins.filament_scale.spool_weight">
+				<span class="add-on">g</span>
+				
+			</div>
+			
+		</div>
+	</div>
+    <p>
+		Remember to save when done!
+	</p>	
+</form>
