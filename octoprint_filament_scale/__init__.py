@@ -7,7 +7,7 @@ import octoprint.plugin
 import flask
 import threading
 from .hx711 import HX711
-
+import RPi.GPIO as GPIO
 
 class Filament_scalePlugin(octoprint.plugin.SettingsPlugin,
 						   octoprint.plugin.AssetPlugin,
@@ -46,16 +46,25 @@ class Filament_scalePlugin(octoprint.plugin.SettingsPlugin,
 	
 	def on_startup(self, host, port):
 		self.hx = HX711(20, 21)
-		self.hx.set_reading_format("LSB", "MSB")
+		self.hx.set_reading_format("LSB", "MSB") 
 		self.hx.reset()
 		self.t = octoprint.util.RepeatedTimer(1.0, self.check_weight)
 		self.t.start()
-	
+		self.last_v = 0
 	def check_weight(self):
 		self.hx.power_up()
-		self._logger.info((self.hx.get_raw_value(5) - self._settings.get_int(["tare"])) / self._settings.get_int(["reference_unit"]))
-		self._plugin_manager.send_plugin_message(self._identifier, self.hx.get_raw_value(5)) 
-		self.hx.power_down()
+		if (self.hx.is_ready()):
+			self.weight_callback()
+		else:
+			GPIO.add_event_detect(self.hx.DOUT, GPIO.FALLING, callback=self.weight_callback, bouncetime=200)
+		
+	def weight_callback(self, channel=0):
+		GPIO.remove_event_detect(self.hx.DOUT)
+		self._logger.info(self.hx.DOUT)
+		v = self.hx.read()
+		self._plugin_manager.send_plugin_message(self._identifier, (v + self.last_v) / 2) 
+		self.last_v = v
+		#self.hx.power_down()
 		
 	def get_update_information(self):
 		# Define the configuration for your plugin to use with the Software Update
@@ -68,12 +77,12 @@ class Filament_scalePlugin(octoprint.plugin.SettingsPlugin,
 
 				# version check: github repository
 				type="github_release",
-				user="dieki_n",
+				user="dieki-n",
 				repo="OctoPrint-Filament_scale",
 				current=self._plugin_version,
 
 				# update method: pip
-				pip="https://github.com/dieki_n/OctoPrint-Filament_scale/archive/{target_version}.zip"
+				pip="https://github.com/dieki-n/OctoPrint-Filament_scale/archive/{target_version}.zip"
 			)
 		)
 

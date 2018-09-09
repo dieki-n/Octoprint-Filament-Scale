@@ -65,7 +65,7 @@ class HX711:
 		while not self.is_ready():
 			#print("WAITING")
 			pass
-
+				
 		dataBits = [self.createBoolList(), self.createBoolList(), self.createBoolList()]
 		dataBytes = [0x0] * 4
 
@@ -89,30 +89,19 @@ class HX711:
 
 		dataBytes[2] ^= 0x80
 
-		return dataBytes
-
-	def get_binary_string(self):
-		binary_format = "{0:b}"
-		np_arr8 = self.read_np_arr8()
-		binary_string = ""
-		for i in range(4):
-			# binary_segment = binary_format.format(np_arr8[i])
-			binary_segment = format(np_arr8[i], '#010b')
-			binary_string += binary_segment + " "
-		return binary_string
-
-	def read_long(self):
-		np_arr8 = self.read()
-		np_arr32 = (np_arr8[3] << 24) + (np_arr8[2] << 16) + (np_arr8[1] << 8) + np_arr8[0]
+		np_arr32 = (dataBytes[3] << 24) + (dataBytes[2] << 16) + (dataBytes[1] << 8) + dataBytes[0]
 		
 		self.lastVal = np_arr32
 
 		return long(self.lastVal)
+		
 
 	def read_average(self, times=3):
+		
+
 		values = long(0)
 		for i in range(times):
-			values += self.read_long()
+			values += self.read()
 
 		return values / times
 
