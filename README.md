@@ -6,7 +6,7 @@ You will need an HX711 breakout board and a compatible load cell. You can find t
 
 See here for instructions on wiring up the load cell: https://tutorials-raspberrypi.com/digital-raspberry-pi-scale-weight-sensor-hx711/
 
-This plugin assumed you connected the data pin to GPIO20, and the clock pin to GPIO21.
+This plugin assumes you connected the data pin to GPIO20, and the clock pin to GPIO21.
 
 You will also need the bracket to connect the load cell to your printer: https://www.thingiverse.com/thing:3037926
 

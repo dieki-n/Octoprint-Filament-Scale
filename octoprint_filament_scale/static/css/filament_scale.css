@@ -1,1 +1,13 @@
 /* TODO: Have your plugin's CSS files generated to here. */
+
+.filament-scale-disabled{
+	opacity: 0.3;
+    cursor: not-allowed;
+    user-select: none;
+}
+.filament-scale-settings-no-connect{
+	padding: 10px;
+    background-color: rgb(255, 170, 170);
+    border-radius: 10px;
+    border: 2px solid rgb(255, 68, 68);
+}

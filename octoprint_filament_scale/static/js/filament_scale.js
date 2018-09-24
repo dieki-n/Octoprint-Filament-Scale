@@ -52,7 +52,7 @@ $(function() {
 			
 				
 			self.last_raw_weight = parseInt(message)
-			if (parseInt(message) == 8388608){
+			if (parseInt(message) == 8388608 || parseInt(message) == 8388607){
 				self.printerState.filamentRemainingString("Sensor Not Connected")
 				self.settings.settings.plugins.filament_scale.lastknownweight("Error")
 			} else {
