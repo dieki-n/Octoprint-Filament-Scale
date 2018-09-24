@@ -36,6 +36,15 @@ $(function() {
 				weight = self.getWeight(self.last_raw_weight)
 				self.settings.settings.plugins.filament_scale.lastknownweight(weight)
 				self.printerState.filamentRemainingString(self.getOutputWeight(weight))
+			} else {
+				error_message = {"tare": self.settings.settings.plugins.filament_scale.tare(),
+								"r_u": self.settings.settings.plugins.filament_scale.reference_unit(),
+								"parsed_r_u": parseInt(self.settings.settings.plugins.filament_scale.reference_unit()),
+								"known_weight": self.calibrate_known_weight,
+								"spool_weight": self.settings.settings.plugins.filament_scale.spool_weight(),
+								"weight": weight,
+								"raw_weight":self.last_raw_weight}
+				console.log(error_message)
 			}
 			
 		}
@@ -52,7 +61,10 @@ $(function() {
 					error_message = {"tare": self.settings.settings.plugins.filament_scale.tare(),
 									"r_u": self.settings.settings.plugins.filament_scale.reference_unit(),
 									"parsed_r_u": parseInt(self.settings.settings.plugins.filament_scale.reference_unit()),
-									"message" : message}
+									"message" : message,
+									"known_weight": self.calibrate_known_weight,
+									"spool_weight": self.settings.settings.plugins.filament_scale.spool_weight()}
+					console.log(error_message)
 					self.settings.settings.plugins.filament_scale.lastknownweight("Error")
 					self.printerState.filamentRemainingString("Calibration Error")				 
 				} else{
