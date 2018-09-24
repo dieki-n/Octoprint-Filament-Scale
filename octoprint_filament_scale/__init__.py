@@ -25,8 +25,8 @@ class Filament_scalePlugin(octoprint.plugin.SettingsPlugin,
 			tare = 8430152,
 			reference_unit=-411,
 			spool_weight=200,
-			clockpin=20,
-			datapin=21,
+			clockpin=21,
+			datapin=20,
 			lastknownweight=0
 			
 			# put your plugin's default settings here
@@ -48,23 +48,15 @@ class Filament_scalePlugin(octoprint.plugin.SettingsPlugin,
 		self.hx = HX711(20, 21)
 		self.hx.set_reading_format("LSB", "MSB") 
 		self.hx.reset()
-		self.t = octoprint.util.RepeatedTimer(1.0, self.check_weight)
+		self.hx.power_up()
+		self.t = octoprint.util.RepeatedTimer(3.0, self.check_weight)
 		self.t.start()
-		self.last_v = 0
+		
 	def check_weight(self):
 		self.hx.power_up()
-		if (self.hx.is_ready()):
-			self.weight_callback()
-		else:
-			GPIO.add_event_detect(self.hx.DOUT, GPIO.FALLING, callback=self.weight_callback, bouncetime=200)
-		
-	def weight_callback(self, channel=0):
-		GPIO.remove_event_detect(self.hx.DOUT)
-		self._logger.info(self.hx.DOUT)
 		v = self.hx.read()
-		self._plugin_manager.send_plugin_message(self._identifier, (v + self.last_v) / 2) 
-		self.last_v = v
-		#self.hx.power_down()
+		self._plugin_manager.send_plugin_message(self._identifier, v) 
+		self.hx.power_down()
 		
 	def get_update_information(self):
 		# Define the configuration for your plugin to use with the Software Update
@@ -72,17 +64,17 @@ class Filament_scalePlugin(octoprint.plugin.SettingsPlugin,
 		# for details.
 		return dict(
 			filament_scale=dict(
-				displayName="Filament_scale Plugin",
+				displayName="Filament Scale Plugin",
 				displayVersion=self._plugin_version,
 
 				# version check: github repository
 				type="github_release",
 				user="dieki-n",
-				repo="OctoPrint-Filament_scale",
+				repo="OctoPrint-Filament-scale",
 				current=self._plugin_version,
 
 				# update method: pip
-				pip="https://github.com/dieki-n/OctoPrint-Filament_scale/archive/{target_version}.zip"
+				pip="https://github.com/dieki-n/OctoPrint-Filament-scale/archive/{target_version}.zip"
 			)
 		)
 

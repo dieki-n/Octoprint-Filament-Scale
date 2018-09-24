@@ -62,9 +62,8 @@ class HX711:
 		return ret
 
 	def read(self):
-		while not self.is_ready():
-			#print("WAITING")
-			pass
+		if not self.is_ready():
+			GPIO.wait_for_edge(self.DOUT, GPIO.FALLING, timeout=5000)
 				
 		dataBits = [self.createBoolList(), self.createBoolList(), self.createBoolList()]
 		dataBytes = [0x0] * 4
@@ -72,7 +71,7 @@ class HX711:
 		for j in range(self.byte_range_values[0], self.byte_range_values[1], self.byte_range_values[2]):
 			for i in range(self.bit_range_values[0], self.bit_range_values[1], self.bit_range_values[2]):
 				GPIO.output(self.PD_SCK, True)
-				dataBits[j][i] = GPIO.input(self.DOUT)
+				dataBits[j][i] = 0#GPIO.input(self.DOUT)
 				GPIO.output(self.PD_SCK, False)
 			
 			dataBytes[j] = bitsToBytes(dataBits[j])[1] 

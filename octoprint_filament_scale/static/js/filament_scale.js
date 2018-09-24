@@ -4,6 +4,9 @@
  * Author: Victor Noordhoek
  * License: AGPLv3
  */
+ 
+ 
+ 
 $(function() {
     function Filament_scaleViewModel(parameters) {
         var self = this;
@@ -25,21 +28,38 @@ $(function() {
 			
 			self.printerState.filamentRemainingString(self.getOutputWeight(weight))
 		};
-		self.calibrate=function(){
+		self.calibrate = function(){
 			
 			weight = Math.round((self.last_raw_weight - self.settings.settings.plugins.filament_scale.tare()))
-			self.settings.settings.plugins.filament_scale.reference_unit(weight / self.calibrate_known_weight)
-			
-			weight = self.getWeight(self.last_raw_weight)
-			self.settings.settings.plugins.filament_scale.lastknownweight(weight)
-			self.printerState.filamentRemainingString(self.getOutputWeight(weight))
+			if (weight != 0 && self.calibrate_known_weight != 0){
+				self.settings.settings.plugins.filament_scale.reference_unit(weight / self.calibrate_known_weight)
+				weight = self.getWeight(self.last_raw_weight)
+				self.settings.settings.plugins.filament_scale.lastknownweight(weight)
+				self.printerState.filamentRemainingString(self.getOutputWeight(weight))
+			}
 			
 		}
 		self.onDataUpdaterPluginMessage = function(plugin, message){
+			
+				
 			self.last_raw_weight = parseInt(message)
-			weight = self.getWeight(message)
-			self.settings.settings.plugins.filament_scale.lastknownweight(weight)
-			self.printerState.filamentRemainingString(self.getOutputWeight(weight))
+			if (parseInt(message) == 8388608){
+				self.printerState.filamentRemainingString("Sensor Not Connected")
+				self.settings.settings.plugins.filament_scale.lastknownweight("Error")
+			} else {
+				weight = self.getWeight(message)
+				if (Number.isNaN(weight)){
+					error_message = {"tare": self.settings.settings.plugins.filament_scale.tare(),
+									"r_u": self.settings.settings.plugins.filament_scale.reference_unit(),
+									"parsed_r_u": parseInt(self.settings.settings.plugins.filament_scale.reference_unit()),
+									"message" : message}
+					self.settings.settings.plugins.filament_scale.lastknownweight("Error")
+					self.printerState.filamentRemainingString("Calibration Error")				 
+				} else{
+					self.settings.settings.plugins.filament_scale.lastknownweight(weight)
+					self.printerState.filamentRemainingString(self.getOutputWeight(weight))
+				}
+			}
 		};
 		self.getWeight = function(weight){
 			return Math.round((parseInt(weight) - self.settings.settings.plugins.filament_scale.tare()) / parseInt(self.settings.settings.plugins.filament_scale.reference_unit()))
