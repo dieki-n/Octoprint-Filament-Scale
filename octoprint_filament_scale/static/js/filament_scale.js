@@ -49,7 +49,7 @@ $(function() {
 			
 		}
 		self.onDataUpdaterPluginMessage = function(plugin, message){
-			
+			if (plugin != "filament_scale") return;
 				
 			self.last_raw_weight = parseInt(message)
 			if (parseInt(message) == 8388608 || parseInt(message) == 8388607){
