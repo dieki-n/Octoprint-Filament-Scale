@@ -122,7 +122,7 @@ class HX711:
 		self.set_reference_unit(1)
 
 		value = self.read_average(times)
-		print value
+		print(value)
 		self.set_offset(value)
 
 		self.set_reference_unit(reference_unit)
