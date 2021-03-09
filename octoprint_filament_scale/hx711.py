@@ -97,20 +97,27 @@ class HX711:
 
 		return int(self.lastVal)
 		
-
-	def read_average(self, times=3):
-		
-
-		values = int(0)
+	def read_average(self, times=6, discard_outliers=True):
+		values = []
 		for i in range(times):
-			values += self.read()
+			values.append(self.read())
 
-		return values / times
+		if discard_outliers:
+			# Inspired by: https://machinelearningmastery.com/how-to-use-statistics-to-identify-outliers-in-data/
+			# Numpy felt a bit much to drag in just to clean up noisy hx711 data
+			readings_mean = statistics.mean(values)
+			readings_stdev = statistics.stdev(values)
+			cutoff = readings_stdev * 1.25
+			lower = readings_stdev - cutoff
+			upper = data_mean + cutoff
+			values = [x for x in values if x > lower and x < upper]
 
-	def get_raw_value(self, times=3):
+		return sum(values) / len(values)
+
+	def get_raw_value(self, times=6):
 		return self.read_average(times)
 
-	def get_weight(self, times=3):
+	def get_weight(self, times=6):
 		value = self.read_average(times) - self.OFFSET
 		value = value / self.REFERENCE_UNIT
 		return value
