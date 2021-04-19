@@ -1,66 +1,67 @@
 # coding=utf-8
 from __future__ import absolute_import
-import sys
-import statistics
 
 import octoprint.plugin
-import flask
-import threading
 from .hx711 import HX711
-import RPi.GPIO as GPIO
 
-class Filament_scalePlugin(octoprint.plugin.SettingsPlugin,
-                           octoprint.plugin.AssetPlugin,
-                           octoprint.plugin.TemplatePlugin,
-                           octoprint.plugin.StartupPlugin):
+try:
+    import RPi.GPIO as GPIO
+except ModuleNotFoundError:
+    import Mock.GPIO as GPIO  # noqa: F401
 
 
-    def get_template_configs(self):
+# pylint: disable=too-many-ancestors
+class FilamentScalePlugin(octoprint.plugin.SettingsPlugin,
+                          octoprint.plugin.AssetPlugin,
+                          octoprint.plugin.TemplatePlugin,
+                          octoprint.plugin.StartupPlugin):
+
+    hx = None
+    t = None
+
+    @staticmethod
+    def get_template_configs():
         return [
             dict(type="settings", custom_bindings=True)
         ]
-    
-    def get_settings_defaults(self):
+
+    @staticmethod
+    def get_settings_defaults():
         return dict(
-            tare = 8430152,
-            reference_unit=-411,
+            tare=8430152,
+            refernce_unit=-411,
             spool_weight=200,
             clockpin=21,
             datapin=20,
             lastknownweight=0
-            
-            # put your plugin's default settings here
         )
 
-    ##~~ AssetPlugin mixin
-
-    def get_assets(self):
-        # Define your plugin's asset files to automatically include in the
-        # core UI here.
+    @staticmethod
+    def get_assets():
         return dict(
             js=["js/filament_scale.js"],
             css=["css/filament_scale.css"],
             less=["less/filament_scale.less"]
         )
 
-    
-    def on_startup(self, host, port):
+    def on_startup(self, host, port):  # pylint: disable=unused-argument
         self.hx = HX711(20, 21)
-        self.hx.set_reading_format("LSB", "MSB") 
+        self.hx.set_reading_format("LSB", "MSB")
         self.hx.reset()
         self.hx.power_up()
         self.t = octoprint.util.RepeatedTimer(3.0, self.check_weight)
         self.t.start()
-        
+
     def check_weight(self):
         self.hx.power_up()
         v = self.hx.read()
-        self._plugin_manager.send_plugin_message(self._identifier, v) 
+        self._plugin_manager.send_plugin_message(self._identifier, v)
         self.hx.power_down()
-        
+
     def get_update_information(self):
-        # Define the configuration for your plugin to use with the Software Update
-        # Plugin here. See https://github.com/foosel/OctoPrint/wiki/Plugin:-Software-Update
+        # Define the configuration for your plugin to use with the
+        # Software Update Plugin here.
+        # See https://github.com/foosel/OctoPrint/wiki/Plugin:-Software-Update
         # for details.
         return dict(
             filament_scale=dict(
@@ -79,15 +80,14 @@ class Filament_scalePlugin(octoprint.plugin.SettingsPlugin,
         )
 
 
-# If you want your plugin to be registered within OctoPrint under a different name than what you defined in setup.py
-# ("OctoPrint-PluginSkeleton"), you may define that here. Same goes for the other metadata derived from setup.py that
-# can be overwritten via __plugin_xyz__ control properties. See the documentation for that.
-__plugin_name__ = "Filament Scale"
-__plugin_pythoncompat__ = ">=3,<4"
+__plugin_name__ = "Filament Scale"  # pylint: disable=global-variable-undefined
+__plugin_pythoncompat__ = ">=3,<4"  # pylint: disable=global-variable-undefined
 
+
+# pylint: disable=global-variable-undefined
 def __plugin_load__():
     global __plugin_implementation__
-    __plugin_implementation__ = Filament_scalePlugin()
+    __plugin_implementation__ = FilamentScalePlugin()
 
     global __plugin_hooks__
     __plugin_hooks__ = {

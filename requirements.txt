@@ -6,4 +6,12 @@
 # works as expected. Requirements can be found in setup.py.
 ###
 
-.
+autopep8
+pytest
+pytest-mypy
+mypy
+pytest-pylint
+pylint
+pytest-flake8
+octoprint
+Mock.GPIO

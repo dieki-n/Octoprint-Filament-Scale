@@ -1,17 +1,21 @@
-import RPi.GPIO as GPIO
 import time
-from pathlib import Path
-import json
-from datetime import datetime
 import statistics
+
+try:
+    import RPi.GPIO as GPIO
+except ModuleNotFoundError:
+    import Mock.GPIO as GPIO
 
 
 def bitsToBytes(a):
-    a = [0] * (8 - len(a) % 8) + a # adding in extra 0 values to make a multiple of 8 bits
-    s = ''.join(str(x) for x in a)[::1] # reverses and joins all bits
+    # adding in extra 0 values to make a multiple of 8 bits
+    a = [0] * (8 - len(a) % 8) + a
+    # reverses and joins all bits
+    s = ''.join(str(x) for x in a)[::1]
     returnInts = []
-    for i in range(0,len(s),8):
-        returnInts.append(int(s[i:i+8],2)) # goes 8 bits at a time to save as ints
+    for i in range(0, len(s), 8):
+        # goes 8 bits at a time to save as ints
+        returnInts.append(int(s[i:i+8], 2))
     return returnInts
 
 
@@ -25,7 +29,9 @@ class HX711:
         GPIO.setup(self.DOUT, GPIO.IN)
 
         self.GAIN = 0
-        self.REFERENCE_UNIT = 1  # The value returned by the hx711 that corresponds to your reference unit AFTER dividing by the SCALE.
+        # The value returned by the hx711 that corresponds to your reference
+        # Unit AFTER dividing by the SCALE.
+        self.REFERENCE_UNIT = 1
 
         self.OFFSET = 1
         self.lastVal = int(0)
@@ -49,22 +55,21 @@ class HX711:
     def is_ready(self):
         return GPIO.input(self.DOUT) == 0
 
-    def set_gain(self, gain):
-        if gain is 128:
+    def set_gain(self, gain: int) -> None:
+        if gain == 128:
             self.GAIN = 1
-        elif gain is 64:
+        elif gain == 64:
             self.GAIN = 3
-        elif gain is 32:
+        elif gain == 32:
             self.GAIN = 2
 
         GPIO.output(self.PD_SCK, False)
         self.read()
 
-    def createBoolList(self, size=8):
-        ret = []
-        for i in range(size):
-            ret.append(False)
-        return ret
+    @staticmethod
+    def createBoolList(size=8):
+        return [False] * size
+
     def read(self):
         x = time.time()
         while x+5 > time.time() and not self.is_ready():
@@ -74,8 +79,10 @@ class HX711:
         dataBits = [self.createBoolList(), self.createBoolList(), self.createBoolList()]
         dataBytes = [0x0] * 4
 
-        for j in range(self.byte_range_values[0], self.byte_range_values[1], self.byte_range_values[2]):
-            for i in range(self.bit_range_values[0], self.bit_range_values[1], self.bit_range_values[2]):
+        for j in range(self.byte_range_values[0], self.byte_range_values[1],
+                       self.byte_range_values[2]):
+            for i in range(self.bit_range_values[0], self.bit_range_values[1],
+                           self.bit_range_values[2]):
                 GPIO.output(self.PD_SCK, True)
 
                 dataBits[j][i] = GPIO.input(self.DOUT)
@@ -84,15 +91,10 @@ class HX711:
 
             dataBytes[j] = bitsToBytes(dataBits[j])[1]
 
-
-        #set channel and gain factor for next reading
+        # set channel and gain factor for next reading
         for i in range(self.GAIN):
             GPIO.output(self.PD_SCK, True)
             GPIO.output(self.PD_SCK, False)
-
-        #check for all 1
-        #if all(item is True for item in dataBits[0]):
-        #    return int(self.lastVal)
 
         dataBytes[2] ^= 0x80
 
@@ -104,19 +106,19 @@ class HX711:
 
     def read_average(self, times=6, discard_outliers=True):
         values = []
-        for i in range(times):
+        for _ in range(times):
             values.append(self.read())
 
         if discard_outliers:
-            # Inspired by: https://machinelearningmastery.com/how-to-use-statistics-to-identify-outliers-in-data/
+            # Inspired by:
+            # https://machinelearningmastery.com/how-to-use-statistics-to-identify-outliers-in-data
             # Numpy felt a bit much to drag in just to clean up noisy hx711 data
             readings_mean = statistics.mean(values)
             readings_stdev = statistics.stdev(values)
             cutoff = readings_stdev * 1.25
             lower = readings_mean - cutoff
             upper = readings_mean + cutoff
-            cleaned_values = [x for x in values if x > lower and x < upper]
-            test_data['cleaned'] = cleaned_values
+            cleaned_values = [x for x in values if lower <= x <= upper]
             values = cleaned_values
 
         return sum(values) / len(values)
@@ -140,7 +142,7 @@ class HX711:
         self.set_offset(value)
 
         self.set_reference_unit(reference_unit)
-        return value;
+        return value
 
     def set_reading_format(self, byte_format="LSB", bit_format="MSB"):
 
@@ -163,9 +165,10 @@ class HX711:
     def set_reference_unit(self, reference_unit):
         self.REFERENCE_UNIT = reference_unit
 
-    # HX711 datasheet states that setting the PDA_CLOCK pin on high for >60 microseconds would power off the chip.
-    # I used 100 microseconds, just in case.
-    # I've found it is good practice to reset the hx711 if it wasn't used for more than a few seconds.
+    # HX711 datasheet states that setting the PDA_CLOCK pin on high for>60
+    # microseconds would power off the chip. I used 100 microseconds, just
+    # in case. I've found it is good practice to reset the hx711 if it
+    # wasn't used for more than a few seconds.
     def power_down(self):
         GPIO.output(self.PD_SCK, False)
         GPIO.output(self.PD_SCK, True)
