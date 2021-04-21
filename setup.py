@@ -14,9 +14,9 @@ except ModuleNotFoundError:
     import sys
     sys.exit(-1)
 
-plugin_identifier = "filament_scale"
+plugin_identifier = "filament_scale_enhanced"
 plugin_package = "octoprint_filament_scale"
-plugin_name = "Filament Scale"
+plugin_name = "Filament Scale Enhanced"
 plugin_version = "0.1.3"
 plugin_description = ("Plugin for integrating a load cell into a filament "
                       "holder.")
@@ -25,6 +25,25 @@ plugin_author_email = "techman83@gmail.com"
 plugin_url = "https://github.com/dieki-n/OctoPrint-Filament-Scale"
 plugin_license = "AGPLv3"
 plugin_requires = ["RPi.GPIO"]
+plugin_extras_require = {
+    'development': [
+        'autopep8',
+        'pytest',
+        'pytest-mypy',
+        'mypy',
+        'pytest-pylint',
+        'pylint',
+        'pytest-flake8',
+    ],
+    'test': [
+        'pytest',
+        'pytest-mypy',
+        'mypy',
+        'pytest-pylint',
+        'pylint',
+        'pytest-flake8',
+    ]
+}
 
 plugin_additional_data = []
 plugin_additional_packages = []
@@ -44,7 +63,8 @@ setup_parameters = octoprint_setuptools.create_plugin_setup_parameters(
     requires=plugin_requires,
     additional_packages=plugin_additional_packages,
     ignored_packages=plugin_ignored_packages,
-    additional_data=plugin_additional_data
+    additional_data=plugin_additional_data,
+    extra_requires=plugin_extras_require
 )
 
 if len(additional_setup_parameters):

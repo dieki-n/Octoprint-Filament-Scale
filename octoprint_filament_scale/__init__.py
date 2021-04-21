@@ -6,7 +6,7 @@ from .hx711 import HX711
 
 try:
     import RPi.GPIO as GPIO
-except ModuleNotFoundError:
+except (ModuleNotFoundError, RuntimeError):
     import Mock.GPIO as GPIO  # noqa: F401
 
 

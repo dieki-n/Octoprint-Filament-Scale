@@ -3,7 +3,7 @@ import statistics
 
 try:
     import RPi.GPIO as GPIO
-except ModuleNotFoundError:
+except (ModuleNotFoundError, RuntimeError):
     import Mock.GPIO as GPIO
 
 
@@ -70,6 +70,7 @@ class HX711:
     def createBoolList(size=8):
         return [False] * size
 
+    # pylint: disable=no-value-for-parameter,assignment-from-no-return
     def read(self):
         x = time.time()
         while x+5 > time.time() and not self.is_ready():
