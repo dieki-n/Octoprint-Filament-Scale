@@ -14,7 +14,7 @@ except ModuleNotFoundError:
     import sys
     sys.exit(-1)
 
-plugin_identifier = "filament_scale_enhanced"
+plugin_identifier = "filament_scale"
 plugin_package = "octoprint_filament_scale"
 plugin_name = "Filament Scale Enhanced"
 plugin_version = "0.2.0"
