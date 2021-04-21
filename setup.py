@@ -34,6 +34,7 @@ plugin_extras_require = {
         'pytest-pylint',
         'pylint',
         'pytest-flake8',
+        'Mock.GPIO',
     ],
     'test': [
         'pytest',
@@ -42,6 +43,7 @@ plugin_extras_require = {
         'pytest-pylint',
         'pylint',
         'pytest-flake8',
+        'Mock.GPIO',
     ]
 }
 
