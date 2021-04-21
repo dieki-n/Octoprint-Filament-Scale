@@ -17,7 +17,7 @@ except ModuleNotFoundError:
 plugin_identifier = "filament_scale_enhanced"
 plugin_package = "octoprint_filament_scale"
 plugin_name = "Filament Scale Enhanced"
-plugin_version = "0.1.3"
+plugin_version = "0.2.0"
 plugin_description = ("Plugin for integrating a load cell into a filament "
                       "holder.")
 plugin_author = "Victor Noordhoek / Leon Wright"
