@@ -57,9 +57,6 @@ compatibility:
   # You can also remove the whole "octoprint" block. Removing it will default to all
   # OctoPrint versions being supported.
 
-  octoprint:
-  - 1.2.0
-
   # List of compatible operating systems
   #
   # Valid values:

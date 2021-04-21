@@ -1,0 +1,23 @@
+name: Run Tests
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install test dependencies
+        run: |
+          pip install OctoPrint
+          pip install .[test]
+      - name: Run pytest
+        run: pytest -v
