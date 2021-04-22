@@ -2,6 +2,7 @@
 # pylint: disable=invalid-name
 
 from setuptools import setup
+from filament_scale_enhanced import __version__
 
 try:
     import octoprint_setuptools
@@ -17,7 +18,7 @@ except ModuleNotFoundError:
 plugin_identifier = "filament_scale_enhanced"
 plugin_package = "filament_scale_enhanced"
 plugin_name = "Filament Scale Enhanced"
-plugin_version = "0.2.0"
+plugin_version = __version__
 plugin_description = ("Plugin for integrating a load cell into a filament "
                       "holder.")
 plugin_author = "Victor Noordhoek / Leon Wright"

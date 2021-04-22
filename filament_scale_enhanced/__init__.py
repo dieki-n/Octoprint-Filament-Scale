@@ -3,6 +3,7 @@ from __future__ import absolute_import
 
 import octoprint.plugin
 
+from .fse_version import VERSION as __version__  # noqa: F401
 from .hx711 import HX711
 
 try:
