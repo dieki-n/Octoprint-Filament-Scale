@@ -22,7 +22,7 @@ plugin_description = ("Plugin for integrating a load cell into a filament "
                       "holder.")
 plugin_author = "Victor Noordhoek / Leon Wright"
 plugin_author_email = "techman83@gmail.com"
-plugin_url = "https://github.com/dieki-n/OctoPrint-Filament-Scale"
+plugin_url = "https://github.com/Techman83/Filament-Scale-Enhanced"
 plugin_license = "AGPLv3"
 plugin_requires = ["RPi.GPIO"]
 plugin_extras_require = {

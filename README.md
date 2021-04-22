@@ -8,16 +8,16 @@ See here for instructions on wiring up the load cell: https://tutorials-raspberr
 
 This plugin assumes you connected the data pin to GPIO20, and the clock pin to GPIO21.
 
-You will also need the bracket to connect the load cell to your printer: i
-    - Regular Spool Holder: https://www.thingiverse.com/thing:3037926
-    - Spannerhands Spool Holder: https://www.thingiverse.com/thing:4834908
+You will also need the bracket to connect the load cell to your printer:
+- Regular Spool Holder: https://www.thingiverse.com/thing:3037926
+- Spannerhands Spool Holder: https://www.thingiverse.com/thing:4834908
 
 ## Setup
 
 Install via the bundled [Plugin Manager](https://github.com/foosel/OctoPrint/wiki/Plugin:-Plugin-Manager)
 or manually using this URL:
 
-    https://github.com/techman83/OctoPrint-Filament-Scale/archive/main.zip
+    https://github.com/techman83/Filament-Scale-Enhanced/archive/main.zip
 
 
 ## Configuration
