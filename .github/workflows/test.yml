@@ -17,7 +17,7 @@ jobs:
           python-version: 3.8
       - name: Install test dependencies
         run: |
-          pip install OctoPrint
+          pip install OctoPrint Mock.GPIO
           pip install .[test]
       - name: Run pytest
         run: pytest -v
