@@ -31,6 +31,7 @@ Python 3 + Python 3 Virtualenv recommended
 ```
 python3 -m venv venv
 source venv/bin/activate
+pip install OctoPrint Mock.GPIO
 pip install ".[development]"
 ```
 

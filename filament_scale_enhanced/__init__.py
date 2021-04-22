@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 import octoprint.plugin
+
 from .hx711 import HX711
 
 try:

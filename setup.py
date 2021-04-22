@@ -14,8 +14,8 @@ except ModuleNotFoundError:
     import sys
     sys.exit(-1)
 
-plugin_identifier = "filament_scale"
-plugin_package = "octoprint_filament_scale"
+plugin_identifier = "filament_scale_enhanced"
+plugin_package = "filament_scale_enhanced"
 plugin_name = "Filament Scale Enhanced"
 plugin_version = "0.2.0"
 plugin_description = ("Plugin for integrating a load cell into a filament "
@@ -34,7 +34,6 @@ plugin_extras_require = {
         'pytest-pylint',
         'pylint',
         'pytest-flake8',
-        'Mock.GPIO',
     ],
     'test': [
         'pytest',
@@ -43,7 +42,6 @@ plugin_extras_require = {
         'pytest-pylint',
         'pylint',
         'pytest-flake8',
-        'Mock.GPIO',
     ]
 }
 
