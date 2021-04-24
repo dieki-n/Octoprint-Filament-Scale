@@ -1,19 +1,19 @@
-name: Run Tests
+name: Run Release Tests
 
 on:
-  push:
-    branches-ignore:
-      - main
-      - development
   pull_request:
-    branches-ignore:
+    branches:
       - main
 
 jobs:
-  test:
+  release-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Ensure Version Bump
+        run: |
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+          [[ ! -z "$(git diff --name-only origin/main HEAD -- filament_scale_enhanced/fse_version.py)" ]]
       - name: Setup Python
         uses: actions/setup-python@v2
         with:

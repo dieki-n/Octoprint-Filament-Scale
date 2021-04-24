@@ -1,6 +1,6 @@
 import unittest
 
-from octoprint_filament_scale.hx711 import HX711
+from filament_scale_enhanced.hx711 import HX711
 
 
 class TestHx711(unittest.TestCase):

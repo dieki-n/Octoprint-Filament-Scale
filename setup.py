@@ -2,6 +2,7 @@
 # pylint: disable=invalid-name
 
 from setuptools import setup
+from filament_scale_enhanced import __version__
 
 try:
     import octoprint_setuptools
@@ -14,15 +15,15 @@ except ModuleNotFoundError:
     import sys
     sys.exit(-1)
 
-plugin_identifier = "filament_scale"
-plugin_package = "octoprint_filament_scale"
+plugin_identifier = "filament_scale_enhanced"
+plugin_package = "filament_scale_enhanced"
 plugin_name = "Filament Scale Enhanced"
-plugin_version = "0.2.0"
+plugin_version = __version__
 plugin_description = ("Plugin for integrating a load cell into a filament "
                       "holder.")
 plugin_author = "Victor Noordhoek / Leon Wright"
 plugin_author_email = "techman83@gmail.com"
-plugin_url = "https://github.com/dieki-n/OctoPrint-Filament-Scale"
+plugin_url = "https://github.com/Techman83/Filament-Scale-Enhanced"
 plugin_license = "AGPLv3"
 plugin_requires = ["RPi.GPIO"]
 plugin_extras_require = {
@@ -34,7 +35,6 @@ plugin_extras_require = {
         'pytest-pylint',
         'pylint',
         'pytest-flake8',
-        'Mock.GPIO',
     ],
     'test': [
         'pytest',
@@ -43,7 +43,6 @@ plugin_extras_require = {
         'pytest-pylint',
         'pylint',
         'pytest-flake8',
-        'Mock.GPIO',
     ]
 }
 
