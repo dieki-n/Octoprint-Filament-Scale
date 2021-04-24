@@ -1,0 +1,36 @@
+---
+name: Generate Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  generate-release:
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install test dependencies
+        run: |
+          pip install OctoPrint Mock.GPIO
+          pip install .[test]
+      - name: Run pytest
+        run: pytest -v
+      - name: Build package
+        run: python setup.py sdist
+      - name: Rename build artifact
+        run: find dist/. -name "*.tar.gz" -type f | rename 's/ /_/g'
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            LICENSE.txt
+            dist/*.tar.gz
