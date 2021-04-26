@@ -15,7 +15,7 @@ except ModuleNotFoundError:
     import sys
     sys.exit(-1)
 
-plugin_identifier = "filament_scale_enhanced"
+plugin_identifier = "filament_scale"
 plugin_package = "filament_scale_enhanced"
 plugin_name = "Filament Scale Enhanced"
 plugin_version = __version__
