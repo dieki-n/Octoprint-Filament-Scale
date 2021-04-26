@@ -60,6 +60,7 @@ class FilamentScalePlugin(octoprint.plugin.SettingsPlugin,
         self._plugin_manager.send_plugin_message(self._identifier, v)
         self.hx.power_down()
 
+    # pylint: disable=line-too-long
     def get_update_information(self):
         # Define the configuration for your plugin to use with the
         # Software Update Plugin here.
@@ -77,7 +78,7 @@ class FilamentScalePlugin(octoprint.plugin.SettingsPlugin,
                 current=self._plugin_version,
 
                 # update method: pip
-                pip="https://github.com/techman83/Filament-Scale-Enhanced/releases/download/v{target_version}/Filament_Scale_Enhanced-{target_version}.tar.gz"  # pylint: disable=line-too-long
+                pip="https://github.com/techman83/Filament-Scale-Enhanced/releases/download/v{target_version}/Filament_Scale_Enhanced-{target_version}.tar.gz"  # noqa: E501
             )
         )
 
