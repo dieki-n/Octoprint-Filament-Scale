@@ -25,8 +25,7 @@ jobs:
       - name: Build package
         run: python setup.py sdist
       - name: Rename build artifact
-        run: find dist/. -name "*.tar.gz" -type f | rename 's/ /_/g'
-
+        run: find dist/. -name "*.tar.gz" -type f -exec bash -c 'x="{}"; mv -v "$x" "${x// /_}"' \;
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
