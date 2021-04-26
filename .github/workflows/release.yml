@@ -30,6 +30,7 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
+          draft: false
           files: |
             LICENSE.txt
             dist/*.tar.gz
