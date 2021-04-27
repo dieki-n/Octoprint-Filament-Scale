@@ -78,7 +78,7 @@ class FilamentScalePlugin(octoprint.plugin.SettingsPlugin,
                 current=self._plugin_version,
 
                 # update method: pip
-                pip="https://github.com/techman83/Filament-Scale-Enhanced/releases/download/v{target_version}/Filament_Scale_Enhanced-{target_version}.tar.gz"  # noqa: E501
+                pip="https://github.com/techman83/Filament-Scale-Enhanced/releases/latest/download/Filament_Scale_Enhanced.zip"  # noqa: E501
             )
         )
 
