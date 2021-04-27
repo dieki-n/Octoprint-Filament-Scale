@@ -1,17 +1,18 @@
----
-name: Generate Release
+name: Release Version
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
 
 jobs:
-  generate-release:
-    runs-on: "ubuntu-latest"
-
+  release:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: collect_tag_version
+        run: |
+          echo VERSION=$(cat filament_scale_enhanced/fse_version.py | awk '{ print $3 }' |  sed  's/"//g') >> $GITHUB_ENV
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -31,6 +32,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
           draft: false
+          automatic_release_tag: "v${{ env.VERSION }}"
           files: |
             LICENSE.txt
             dist/*.tar.gz
