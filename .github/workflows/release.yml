@@ -28,7 +28,7 @@ jobs:
       - name: Build package
         run: python setup.py sdist --formats=zip
       - name: Rename build artifact
-        run: find dist/. -name "*.zip" -type f -exec bash -c 'x="{}"; mv -v "$x" "Filament_Scale_Enhanced.zip"' \;
+        run: find dist/. -name "*.zip" -type f -exec bash -c 'x="{}"; mv -v "$x" "dist/Filament_Scale_Enhanced.zip"' \;
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
