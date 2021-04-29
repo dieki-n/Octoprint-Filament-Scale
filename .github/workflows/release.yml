@@ -1,39 +1,21 @@
+---
 name: Release Version
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - filament_scale_enhanced/fse_version.py
+    tags:
+      - "v*"
 
 jobs:
-  tag:
+  generate-release:
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.output_version.outputs.version }}
     steps:
       - uses: actions/checkout@v2
-      - name: collect_tag_version
+      - name: Set package version
         run: |
-          echo VERSION=$(cat filament_scale_enhanced/fse_version.py | awk '{ print $3 }' |  sed  's/"//g') >> $GITHUB_ENV
-      - name: Push tag
-        uses: mathieudutour/github-tag-action@v5.5
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          custom_tag: ${{ env.VERSION }}
-          tag_prefix: v
-      - name: Output Version
-        id: output_version
-        run: echo "::set-output name=version::${{ env.VERSION }}"
-
-  release:
-    runs-on: ubuntu-latest
-    needs: tag
-    steps:
-      - uses: actions/checkout@v2
-        with:
-         ref: "v${{ needs.tag.outputs.version }}"
+          export VERSION=$(echo $GITHUB_REF | sed 's/refs\/tags\/v//')
+          echo "VERSION set to $VERSION"
+          echo VERSION = \'$VERSION\' > filament_scale_enhanced/fse_version.py
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -53,7 +35,6 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
           draft: false
-          automatic_release_tag: "v${{ needs.tag.outputs.version }}"
           files: |
             LICENSE.txt
             dist/Filament_Scale_Enhanced.zip
