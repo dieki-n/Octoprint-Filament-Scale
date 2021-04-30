@@ -24,6 +24,10 @@ or manually using this URL:
 
 Once you have wired up the HX711, it must be calibrated. This is a pretty straightforward process, and all you will need is an object of known weight. Attach the load cell to your printer with the printed bracket, then follow the instructions on the plugin's settings page.
 
+## Troubleshooting
+
+`NaN` may be occasionally displayed in the interface when the weight can't be read correctly. The cheap boards vary in quality and are a little sensitive to vibration/power stability. Ensure the cabling is secure, you have a sufficiently sized load cell, and a good power supply.
+
 ## Development
 
 Python 3 + Python 3 Virtualenv recommended
