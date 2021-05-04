@@ -2,7 +2,10 @@
 # pylint: disable=invalid-name
 
 from setuptools import setup
-from filament_scale_enhanced import __version__
+
+version = {}
+with open("filament_scale_enhanced/fse_version.py") as fp:
+    exec(fp.read(), version)  # pylint: disable=exec-used
 
 try:
     import octoprint_setuptools
@@ -18,7 +21,7 @@ except ModuleNotFoundError:
 plugin_identifier = "filament_scale"
 plugin_package = "filament_scale_enhanced"
 plugin_name = "Filament Scale Enhanced"
-plugin_version = __version__
+plugin_version = version['VERSION']
 plugin_description = ("Plugin for integrating a load cell into a filament "
                       "holder.")
 plugin_author = "Victor Noordhoek / Leon Wright"
@@ -35,6 +38,7 @@ plugin_extras_require = {
         'pytest-pylint',
         'pylint',
         'pytest-flake8',
+        'Mock.GPIO'
     ],
     'test': [
         'pytest',
@@ -43,6 +47,7 @@ plugin_extras_require = {
         'pytest-pylint',
         'pylint',
         'pytest-flake8',
+        'Mock.GPIO'
     ]
 }
 
