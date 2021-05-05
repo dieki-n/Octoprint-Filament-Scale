@@ -31,7 +31,7 @@ class FilamentScalePlugin(octoprint.plugin.SettingsPlugin,
     def get_settings_defaults():
         return dict(
             tare=8430152,
-            refernce_unit=-411,
+            reference_unit=-411,
             spool_weight=200,
             clockpin=21,
             datapin=20,
