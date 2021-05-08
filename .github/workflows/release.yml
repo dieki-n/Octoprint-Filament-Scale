@@ -1,0 +1,42 @@
+---
+name: Release Version
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  generate-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set package version
+        run: |
+          export VERSION=$(echo $GITHUB_REF | sed 's/refs\/tags\/v//')
+          echo "VERSION set to $VERSION"
+          echo VERSION = \'$VERSION\' > filament_scale_enhanced/fse_version.py
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install OctoPrint
+        run: pip install OctoPrint
+      - name: Print Version
+        run: python setup.py --version
+      - name: Install test dependencies
+        run: pip install .[test]
+      - name: Run pytest
+        run: pytest -v
+      - name: Build package
+        run: python setup.py sdist --formats=zip
+      - name: Rename build artifact
+        run: find dist/. -name "*.zip" -type f -exec bash -c 'x="{}"; mv -v "$x" "dist/Filament_Scale_Enhanced.zip"' \;
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          draft: false
+          files: |
+            LICENSE.txt
+            dist/Filament_Scale_Enhanced.zip

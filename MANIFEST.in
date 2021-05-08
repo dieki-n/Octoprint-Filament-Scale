@@ -1,4 +1,4 @@
 include README.md
-recursive-include octoprint_filament_scale/templates *
-recursive-include octoprint_filament_scale/translations *
-recursive-include octoprint_filament_scale/static *
+recursive-include filament_scale_enhanced/templates *
+recursive-include filament_scale_enhanced/translations *
+recursive-include filament_scale_enhanced/static *
