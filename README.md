@@ -1,3 +1,8 @@
+I don't use this anymore and don't maintain it.
+
+This guy forked it and looks to have made some updates. Check him out: https://github.com/techman83/Filament-Scale-Enhanced
+
+
 # OctoPrint Filament Scale
 
 This plugin allows connecting an HX711-based load cell to Octoprint to read out the current weight of the remaining filament.
