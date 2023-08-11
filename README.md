@@ -24,6 +24,15 @@ or manually using this URL:
 
 Once you have wired up the HX711, it must be calibrated. This is a pretty straightforward process, and all you will need is an object of known weight. Attach the load cell to your printer with the printed bracket, then follow the instructions on the plugin's settings page.
 
+## MQTT
+
+If you would like weight messages published via MQTT, install and configure [Octoprint-MQTT](https://plugins.octoprint.org/plugins/mqtt/)
+
+Once it's configured correctly, this library will automatically detect it and start publishing messages in the following format:
+```
+baseTopic/plugin/filament_scale/filament_weight 171
+```
+
 ## Troubleshooting
 
 `NaN` may be occasionally displayed in the interface when the weight can't be read correctly. The cheap boards vary in quality and are a little sensitive to vibration/power stability. Ensure the cabling is secure, you have a sufficiently sized load cell, and a good power supply.
