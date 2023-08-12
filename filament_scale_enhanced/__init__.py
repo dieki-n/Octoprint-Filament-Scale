@@ -108,7 +108,7 @@ class FilamentScalePlugin(
         self._logger.debug("Begin hxRead")
         try:
             self.hx.power_up()
-            v = self.hx.read()
+            v = self.hx.read_average()
             self.last_weight = v
             self._plugin_manager.send_plugin_message(self._identifier, v)
             self.hx.power_down()
