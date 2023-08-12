@@ -4,7 +4,7 @@
 from setuptools import setup
 
 version = {}
-with open("filament_scale_enhanced/fse_version.py") as fp:
+with open("filament_scale_enhanced/fse_version.py", encoding="utf8") as fp:
     exec(fp.read(), version)  # pylint: disable=exec-used
 
 try:
@@ -38,7 +38,9 @@ plugin_extras_require = {
         'pytest-pylint',
         'pylint',
         'pytest-flake8',
-        'Mock.GPIO'
+        'Mock.GPIO',
+        # Flake8 is likely a dead end
+        'flake8<5',
     ],
     'test': [
         'pytest',
@@ -47,7 +49,9 @@ plugin_extras_require = {
         'pytest-pylint',
         'pylint',
         'pytest-flake8',
-        'Mock.GPIO'
+        'Mock.GPIO',
+        # Flake8 is likely a dead end
+        'flake8<5',
     ]
 }
 

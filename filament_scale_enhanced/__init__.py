@@ -1,16 +1,15 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-import flask
 import octoprint.plugin
 
 from .fse_version import VERSION as __version__  # noqa: F401
 from .hx711 import HX711
 
 try:
-    import RPi.GPIO as GPIO
+    from RPi import GPIO
 except (ModuleNotFoundError, RuntimeError):
-    import Mock.GPIO as GPIO  # noqa: F401
+    from Mock import GPIO  # noqa: F401
 
 
 # pylint: disable=too-many-ancestors
@@ -26,27 +25,27 @@ class FilamentScalePlugin(
     tq = None
 
     @staticmethod
-    def get_template_configs():
-        return [dict(type="settings", custom_bindings=True)]
+    def get_template_configs():  # pylint: disable=arguments-differ
+        return [{"type": "settings", "custom_bindings": True}]
 
     @staticmethod
-    def get_settings_defaults():
-        return dict(
-            tare=8430152,
-            reference_unit=-411,
-            spool_weight=200,
-            clockpin=21,
-            datapin=20,
-            lastknownweight=0,
-        )
+    def get_settings_defaults():  # pylint: disable=arguments-differ
+        return {
+            "tare": 8430152,
+            "reference_unit": -411,
+            "spool_weight": 200,
+            "clockpin": 21,
+            "datapin": 20,
+            "lastknownweight": 0,
+        }
 
     @staticmethod
-    def get_assets():
-        return dict(
-            js=["js/filament_scale.js"],
-            css=["css/filament_scale.css"],
-            less=["less/filament_scale.less"],
-        )
+    def get_assets():  # pylint: disable=arguments-differ
+        return {
+            "js": ["js/filament_scale.js"],
+            "css": ["css/filament_scale.css"],
+            "less": ["less/filament_scale.less"],
+        }
 
     def __init__(self):
         super().__init__()
@@ -113,10 +112,10 @@ class FilamentScalePlugin(
             self.last_weight = v
             self._plugin_manager.send_plugin_message(self._identifier, v)
             self.hx.power_down()
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             self._logger.exception(err)
 
-    # pylint: disable=line-too-long
+    # pylint: disable=line-too-long,use-dict-literal
     def get_update_information(self):
         # Define the configuration for your plugin to use with the
         # Software Update Plugin here.
