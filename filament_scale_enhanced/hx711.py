@@ -2,9 +2,9 @@ import time
 import statistics
 
 try:
-    import RPi.GPIO as GPIO
+    from RPi import GPIO
 except (ModuleNotFoundError, RuntimeError):
-    import Mock.GPIO as GPIO
+    from Mock import GPIO
 
 
 def bitsToBytes(a):

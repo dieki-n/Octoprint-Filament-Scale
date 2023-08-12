@@ -10,14 +10,14 @@ jobs:
   generate-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set package version
         run: |
           export VERSION=$(echo $GITHUB_REF | sed 's/refs\/tags\/v//')
           echo "VERSION set to $VERSION"
           echo VERSION = \'$VERSION\' > filament_scale_enhanced/fse_version.py
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
       - name: Install OctoPrint
